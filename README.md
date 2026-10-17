@@ -1,48 +1,107 @@
-# Summit Roofing Co. — Instant Roof Cost Estimator
+# Summit Roofing Co. — Instant Roof Cost Estimator & Lead Capture Platform
 
-A high-converting, mobile-first roofing estimation web application built with **React 19**, **Tailwind CSS v4**, **TypeScript**, and **Vite**.
-
-Designed specifically for roofing contractors to capture high-intent residential and commercial leads in under 60 seconds with zero friction.
+A modern, high-converting roofing estimation platform engineered specifically for professional roofing contractors. Designed for speed, precision, and homeowner trust, it enables prospective clients to obtain an accurate, itemized cost estimate in under 60 seconds while delivering qualified, ready-to-book leads directly into your sales pipeline.
 
 ---
 
-## ⚡ 10-Minute Rebranding & Client Customization
+## 🎯 Executive Overview
 
-All brand information, municipal copy, pricing rates, multipliers, extras catalog, and webhook endpoints live inside **a single configuration file**:
+For roofing companies, the primary bottleneck in online customer acquisition is friction: traditional forms ask for too much before offering value, while generic online calculators produce unrealistic numbers that erode trust.
+
+This platform bridges that gap by offering:
+- **Transparent, Realistic Pricing**: Clear line-item breakdowns based on actual roof geometry, material selections, and project complexity.
+- **Interactive 3D Visualization**: Real-time 3D roof preview that reflects material selections (Architectural Shingles, Standing Seam Metal, Spanish Clay Tile, Commercial TPO) dynamically.
+- **Seamless Lead Conversion**: An intuitive step-by-step wizard that transitions naturally from transparent pricing to scheduling a free on-site physical inspection.
+- **Zero Lock-in & Complete Customization**: All rates, multipliers, municipal details, and branding can be adapted to any local contractor or market in minutes.
+
+---
+
+## 💡 Key Architectural Features
+
+### 1. Step-by-Step Intelligent Estimation Wizard
+Guides homeowners through an intuitive, frictionless 5-step process:
+- **Service Type**: Full roof replacement, leak/storm repair, or new construction.
+- **Roof Dimensions**: Homeowners can enter ground square footage (with automatic pitch pitch-factor calculation) or exact roof surface square footage.
+- **Architectural Materials**:
+  - Architectural Asphalt Shingles (Class 3 / Class 4 impact resistance)
+  - Standing Seam Metal (Cool roof reflectivity, 50+ year durability)
+  - Spanish Clay / Concrete Tile (High wind load and thermal mass)
+  - Commercial Flat / TPO Membrane (Single-ply heat-welded commercial grade)
+- **Roof Complexity & Geometry**: Accounts for story height (1-story, 2-story, 3+ stories) and pitch severity (low, medium, steep slopes).
+- **Project Add-Ons & Site Preparation**: Tear-off of existing layers, seamless aluminum gutters, skylight replacement/flashing, radiant barrier thermal sheathing, and emergency tarping.
+
+### 2. Interactive 3D Architectural Viewer
+- Built with **Three.js** to give homeowners immediate tactile feedback as they switch between materials, slope profiles, and roof styles.
+- Procedural textures generated client-side for ultra-fast load times with zero heavy asset downloads.
+
+### 3. Transparent Range Estimator
+- Provides a realistic price band (`-12%` to `+15%`) rather than a single misleading number, setting honest expectations for homeowners and protecting contractor margins.
+- Displays full cost components: estimated materials, skilled labor & installation, tear-off/prep, and selected accessories.
+
+### 4. Contractor CRM & Lead Routing
+- Direct lead submission endpoint (`/api/submit-lead`) with webhook dispatch to any CRM (Zapier, Make, Formspree, HubSpot, JobNimbus, or Google Sheets).
+- Embedded Admin Lead Management dashboard (`?admin` mode) with offline persistence and real-time Supabase sync capabilities.
+- Captured lead payloads include complete project scope: square footage, selected materials, story height, calculated price ranges, contact details, inspection time preferences, and homeowner notes.
+
+### 5. Local Market Intelligence
+- Optional localized weather and permitting intelligence module, allowing contractors to showcase recent hail/storm activity and local municipal building codes to reinforce authority.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend Framework** | React 19 + TypeScript |
+| **Styling & Design System** | Tailwind CSS v4 + Framer Motion |
+| **3D Graphics Engine** | Three.js |
+| **Icons & Visuals** | Lucide React |
+| **Build Tool & Bundler** | Vite 8 |
+| **Backend & Lead Processing** | Node.js / Express + Vercel Serverless Functions |
+| **Persistence / CRM** | Supabase (Client & Server) + Webhook dispatcher |
+| **Testing Suite** | Vitest (Calculation & pricing unit tests) |
+
+---
+
+## ⚡ 10-Minute Contractor Onboarding & Rebranding
+
+Deploying this solution for any roofing business or municipal market requires modifying **only one file**:
 
 📁 **`src/config/roofingConfig.ts`**
 
-To deploy for a new roofing contractor in a different city:
-
-1. **Company & Contact:**
-   ```ts
-   brand: {
-     companyName: "Lone Star Premier Roofing",
-     city: "Dallas, TX",
-     phone: "(214) 555-0188",
-     phoneRaw: "2145550188",
-     ownerEmail: "quotes@lonestarpremier.com",
-     licenseNumber: "TX-RCL#88412",
-     primaryColor: "#0F2A43", // Navy
-     accentColor: "#F97316",  // Orange
-     webhookUrl: "https://formspree.io/f/your_form_id", // Zapier / Make / Apps Script
-   }
-   ```
-2. **Pricing Rates & Multipliers:**
-   - Adjust `materialPerSqFt` (Asphalt Shingles, Standing Seam Metal, Tile, Flat/TPO).
-   - Adjust `serviceMultipliers` (Full Replacement: 1.0, Repair: 0.35, New Construction: 0.92).
-   - Adjust `storiesMultipliers` (1 Story: 1.0, 2 Stories: 1.15, 3+ Stories: 1.30).
-   - Adjust `pitchMultipliers` (Low: 1.0, Medium: 1.08, Steep: 1.25).
-   - Customize `extrasCatalog` (Tear-off, Seamless Gutters, Skylights, Radiant Barrier, Emergency Tarping).
-3. **Variance Range:**
-   - `lowVariancePercentage: 0.12` (-12%)
-   - `highVariancePercentage: 0.15` (+15%)
+```ts
+export const roofingConfig: AppConfig = {
+  brand: {
+    companyName: 'Lone Star Premier Roofing',
+    city: 'Dallas, TX',
+    phone: '(214) 555-0188',
+    ownerEmail: 'quotes@lonestarpremier.com',
+    licenseNumber: 'TX-RCL#88412',
+    primaryColor: '#0F2A43', // Contractor Navy
+    accentColor: '#F97316',  // Accent Safety Orange
+    webhookUrl: 'https://formspree.io/f/your_form_id', // Lead webhook endpoint
+  },
+  pricing: {
+    lowVariancePercentage: 0.12,
+    highVariancePercentage: 0.15,
+    materialPerSqFt: {
+      asphalt: { basePricePerSqFt: 5.25, ... },
+      metal: { basePricePerSqFt: 10.75, ... },
+      tile: { basePricePerSqFt: 12.50, ... },
+      tpo: { basePricePerSqFt: 6.80, ... },
+    },
+    serviceMultipliers: { replacement: 1.0, repair: 0.35, new_construction: 0.92 },
+    storiesMultipliers: { 1: 1.0, 2: 1.15, 3: 1.30 },
+    pitchMultipliers: { low: 1.0, medium: 1.08, steep: 1.25 }
+  }
+};
+```
 
 ---
 
-## 🎯 Lead Handling & Webhook Integration
+## 📋 Lead Payload Schema
 
-When a homeowner books a free inspection, the app POSTs the lead contact details along with the line-item estimate calculations to `/api/submit-lead` which dispatches to your configured webhook URL:
+When a prospect books an inspection, the platform dispatches structured JSON containing both client information and exact calculation parameters:
 
 ```json
 {
@@ -61,7 +120,7 @@ When a homeowner books a free inspection, the app POSTs the lead contact details
       "material": "asphalt",
       "stories": 1,
       "pitch": "medium",
-      "extras": ["tear_off"]
+      "extras": ["tear_off", "gutters"]
     },
     "breakdown": {
       "estimatedLow": 12850,
@@ -72,47 +131,50 @@ When a homeowner books a free inspection, the app POSTs the lead contact details
 }
 ```
 
-**Supported Webhook Providers:**
-- **Formspree:** Set `webhookUrl: "https://formspree.io/f/your_id"`
-- **Zapier / Make:** Create a "Catch Hook" trigger and paste the URL.
-- **Google Sheets:** Use a Google Apps Script web app URL to append rows directly.
-
 ---
 
-## 🔍 Real-Time Google Search Grounding
+## 🧪 Quality Assurance & Mathematical Testing
 
-The app includes an Austin Roofing & Hail Storm Intelligence module backed by `gemini-3.8-flash` with Google Search grounding (`tools: [{ googleSearch: {} }]`). Homeowners can verify real-time City of Austin building permits, recent hailstorm activity in Travis County, and local price benchmarks.
-
----
-
-## 🧪 Unit Testing Suite
-
-Comprehensive unit tests verify calculation mathematics, multiplier compounding, per-sqft vs flat-rate add-ons, and floating-point stability:
+To ensure absolute calculation integrity and prevent margin discrepancies, the pricing algorithm is validated with a dedicated Vitest test suite:
 
 ```bash
 npm test
 ```
 
-All tests run via **Vitest** in `src/utils/pricingEngine.test.ts`.
+Tests cover:
+- Multiplier compound formulas
+- Pitch factor square footage translations
+- Flat vs. per-square-foot extra charges
+- Floating-point financial rounding stability
 
 ---
 
-## 🚀 Deployment to Vercel
+## 🚀 Local Development & Deployment
 
-### Option 1: Vercel CLI
+### Quick Start
 ```bash
-npm install -g vercel
-vercel
+# 1. Install dependencies
+npm install
+
+# 2. Start development server
+npm run dev
 ```
 
-### Option 2: Vercel Web Dashboard (Git push)
-1. Push this repository to GitHub or GitLab.
-2. In Vercel, click **"Add New Project"** and select the repository.
-3. Framework Preset: **Vite**
-4. Build Command: `npm run build`
-5. Output Directory: `dist`
-6. Environment Variables:
-   - `GEMINI_API_KEY`: Your Google Gen AI API key for Search Grounding.
-7. Click **Deploy**.
+### Production Build
+```bash
+npm run build
+npm run preview
+```
 
-For full-stack deployment with the Express backend, Vercel Serverless Functions can serve `/api/*` or Cloud Run / Render / Railway can execute `npm start`.
+### Deploying to Vercel
+1. Import this repository into Vercel.
+2. Framework Preset: **Vite**.
+3. Build Command: `npm run build`.
+4. Output Directory: `dist`.
+5. Deploy.
+
+---
+
+## 📄 License & Attribution
+
+Designed and engineered by **[ScaleUp Dynamics](https://github.com/scaleup-dynamics)** for commercial client deployment. All rights reserved.
