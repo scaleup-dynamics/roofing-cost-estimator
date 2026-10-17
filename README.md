@@ -1,10 +1,10 @@
 # Summit Roofing Co. — Instant Roof Cost Estimator & Lead Capture Platform
 
-A modern, high-converting roofing estimation platform engineered specifically for professional roofing contractors. Designed for speed, precision, and homeowner trust, it enables prospective clients to obtain an accurate, itemized cost estimate in under 60 seconds while delivering qualified, ready-to-book leads directly into your sales pipeline.
+A high-converting roofing estimation platform engineered specifically for professional roofing contractors. Designed for speed, precision, and homeowner trust, it enables prospective clients to obtain an accurate, itemized cost estimate in under 60 seconds while delivering qualified, ready-to-book leads directly into your sales pipeline.
 
 ---
 
-## 🎯 Executive Overview
+## Executive Overview
 
 For roofing companies, the primary bottleneck in online customer acquisition is friction: traditional forms ask for too much before offering value, while generic online calculators produce unrealistic numbers that erode trust.
 
@@ -16,12 +16,12 @@ This platform bridges that gap by offering:
 
 ---
 
-## 💡 Key Architectural Features
+## Key Architectural Features
 
 ### 1. Step-by-Step Intelligent Estimation Wizard
 Guides homeowners through an intuitive, frictionless 5-step process:
 - **Service Type**: Full roof replacement, leak/storm repair, or new construction.
-- **Roof Dimensions**: Homeowners can enter ground square footage (with automatic pitch pitch-factor calculation) or exact roof surface square footage.
+- **Roof Dimensions**: Homeowners can enter ground square footage (with automatic pitch-factor calculation) or exact roof surface square footage.
 - **Architectural Materials**:
   - Architectural Asphalt Shingles (Class 3 / Class 4 impact resistance)
   - Standing Seam Metal (Cool roof reflectivity, 50+ year durability)
@@ -48,7 +48,7 @@ Guides homeowners through an intuitive, frictionless 5-step process:
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 | Layer | Technology |
 |---|---|
@@ -63,11 +63,11 @@ Guides homeowners through an intuitive, frictionless 5-step process:
 
 ---
 
-## ⚡ 10-Minute Contractor Onboarding & Rebranding
+## Contractor Onboarding & Rebranding
 
-Deploying this solution for any roofing business or municipal market requires modifying **only one file**:
+Deploying this solution for any roofing business or municipal market requires modifying **only one configuration file**:
 
-📁 **`src/config/roofingConfig.ts`**
+`src/config/roofingConfig.ts`
 
 ```ts
 export const roofingConfig: AppConfig = {
@@ -99,7 +99,7 @@ export const roofingConfig: AppConfig = {
 
 ---
 
-## 📋 Lead Payload Schema
+## Lead Payload Schema
 
 When a prospect books an inspection, the platform dispatches structured JSON containing both client information and exact calculation parameters:
 
@@ -133,7 +133,7 @@ When a prospect books an inspection, the platform dispatches structured JSON con
 
 ---
 
-## 🧪 Quality Assurance & Mathematical Testing
+## Quality Assurance & Mathematical Testing
 
 To ensure absolute calculation integrity and prevent margin discrepancies, the pricing algorithm is validated with a dedicated Vitest test suite:
 
@@ -149,7 +149,7 @@ Tests cover:
 
 ---
 
-## 🚀 Local Development & Deployment
+## Local Development & Deployment
 
 ### Quick Start
 ```bash
@@ -175,6 +175,6 @@ npm run preview
 
 ---
 
-## 📄 License & Attribution
+## License & Attribution
 
 Designed and engineered by **[ScaleUp Dynamics](https://github.com/scaleup-dynamics)** for commercial client deployment. All rights reserved.
