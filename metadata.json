@@ -1,0 +1,8 @@
+{
+  "name": "Summit Roofing Co. - Instant Roof Cost Estimator",
+  "description": "Get an instant, transparent roofing estimate in 60 seconds for Austin, TX homeowners. Features multi-step pricing calculator, real-time local roofing intel, and direct inspection booking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
