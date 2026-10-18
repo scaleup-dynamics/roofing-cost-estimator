@@ -28,3 +28,54 @@
     }
   }
 }
+
+@layer utilities {
+  /* Slow rotation animation — used on sparkle icons throughout the UI */
+  .animate-spin-slow {
+    animation: spin 4s linear infinite;
+  }
+
+  /* GPU-promoted layer for Three.js canvas containers — prevents layout reflow during rotation */
+  .gpu-layer {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Promote animated motion divs to their own composited layer */
+  .motion-safe-layer {
+    will-change: opacity, transform;
+    transform: translateZ(0);
+  }
+
+  /*
+    On mobile, reduce backdrop-blur cost by halving blur radius.
+    Full blur is restored on sm+ (640px) screens where GPU headroom is larger.
+    This prevents dropped frames on low-end Android/iOS browsers.
+  */
+  @media (max-width: 639px) {
+    .backdrop-blur-md {
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .backdrop-blur-sm {
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+    .backdrop-blur-xl {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+  }
+
+  /* Smooth scrolling for anchor navigation on all browsers */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Fix for iOS Safari 100vh quirk — use dvh with vh fallback */
+  .min-h-screen-safe {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}

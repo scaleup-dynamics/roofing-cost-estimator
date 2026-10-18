@@ -55,6 +55,8 @@ export const RoofVisualizer3D: React.FC<RoofVisualizer3DProps> = ({
 
   // Material resources cache for clean GPU disposal
   const resourcesRef = useRef<any[]>([]);
+  // Single instance of all roof materials — built once, reused on every material switch
+  const materialsLibraryRef = useRef<Record<RoofMaterial, THREE.MeshStandardMaterial> | null>(null);
 
   // Synchronize autoRotate state with ref and controls
   useEffect(() => {
@@ -91,11 +93,13 @@ export const RoofVisualizer3D: React.FC<RoofVisualizer3DProps> = ({
       precision: isMobile ? 'mediump' : 'highp',
     });
     renderer.setSize(width, heightPx);
-    renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 1.25) : Math.min(window.devicePixelRatio, 2));
+    // Cap mobile at 1.0x DPR — halves GPU fill-rate vs 1.25. Imperceptible at phone viewing distance.
+    renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.02; // Balanced exposure - eliminates washed-out white clipping
-    renderer.shadowMap.enabled = true;
+    renderer.toneMappingExposure = 1.02;
+    // Disable shadows on mobile — they're the single largest GPU cost and invisible at small sizes
+    renderer.shadowMap.enabled = !isMobile;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
@@ -147,7 +151,7 @@ export const RoofVisualizer3D: React.FC<RoofVisualizer3DProps> = ({
 
     // Direct auto-rotation binding - no mouse hover interference
     controls.autoRotate = autoRotateRef.current;
-    controls.autoRotateSpeed = 1.4;
+    controls.autoRotateSpeed = isMobile ? 0.8 : 1.4;
 
     controls.touches = {
       ONE: THREE.TOUCH.ROTATE,
@@ -413,6 +417,8 @@ export const RoofVisualizer3D: React.FC<RoofVisualizer3DProps> = ({
     };
 
     // Helper: Build pitched roof geometry with realistic eaves overhang
+    // Store in ref so the material-switch effect can swap references without re-allocating
+    materialsLibraryRef.current = materialsLibrary;
     function buildPitchedRoofGeo(p: RoofPitch): THREE.BufferGeometry {
       const peakH = p === 'low' ? 0.95 : p === 'medium' ? 1.75 : 2.65;
       const rWidth = 5.9; // 35cm eaves overhang past walls
@@ -654,55 +660,22 @@ export const RoofVisualizer3D: React.FC<RoofVisualizer3DProps> = ({
     };
   }, []);
 
-  // Dynamic Updates: Material Change
+  // Dynamic Updates: Material Change — swap pre-built material refs, no GPU allocation
   useEffect(() => {
     if (!roofMeshRef.current || !parapetGroupRef.current || !ridgeCapMeshRef.current) return;
 
-    const asphaltTex = createAsphaltShingleTexture();
-    const metalTex = createStandingSeamTexture();
-    const tileTex = createClayTileTexture();
-    const tpoTex = createFlatTPOTexture();
-
-    const materialsLibrary: Record<RoofMaterial, THREE.MeshStandardMaterial> = {
-      asphalt: new THREE.MeshStandardMaterial({
-        map: asphaltTex.map,
-        bumpMap: asphaltTex.bumpMap,
-        bumpScale: 0.12,
-        roughness: 0.78,
-        metalness: 0.18,
-        color: 0x242d38,
-      }),
-      metal: new THREE.MeshStandardMaterial({
-        map: metalTex.map,
-        roughnessMap: metalTex.roughnessMap,
-        roughness: 0.22,
-        metalness: 0.88,
-        color: 0x16202c,
-      }),
-      tile: new THREE.MeshStandardMaterial({
-        map: tileTex.map,
-        bumpMap: tileTex.bumpMap,
-        bumpScale: 0.16,
-        roughness: 0.58,
-        metalness: 0.06,
-        color: 0xb84728,
-      }),
-      flat_tpo: new THREE.MeshStandardMaterial({
-        map: tpoTex.map,
-        bumpMap: tpoTex.bumpMap,
-        bumpScale: 0.04,
-        roughness: 0.35,
-        metalness: 0.1,
-        color: 0x8392a2,
-      }),
-    };
+    // The materialsLibrary is built once during scene init and stored in a ref.
+    // Here we just look up the already-built material and swap the reference.
+    // No new texture or material objects are created on material change.
+    const lib = materialsLibraryRef.current;
+    if (!lib) return;
 
     const isFlat = material === 'flat_tpo';
 
-    roofMeshRef.current.material = materialsLibrary[material];
+    roofMeshRef.current.material = lib[material];
     roofMeshRef.current.visible = !isFlat;
 
-    ridgeCapMeshRef.current.material = materialsLibrary[material];
+    ridgeCapMeshRef.current.material = lib[material];
     ridgeCapMeshRef.current.visible = !isFlat;
 
     if (gableFrontMeshRef.current) gableFrontMeshRef.current.visible = !isFlat;

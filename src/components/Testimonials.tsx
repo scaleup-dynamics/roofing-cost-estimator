@@ -21,9 +21,9 @@ export const Testimonials: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {testimonials.map((t, idx) => (
+          {testimonials.map((t) => (
             <div
-              key={idx}
+              key={t.name}
               className="p-6 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200/90 shadow-sm hover:shadow-md transition flex flex-col justify-between"
             >
               <div>

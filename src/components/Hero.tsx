@@ -94,18 +94,13 @@ export const Hero: React.FC<HeroProps> = ({ onStartEstimate, onOpenIntel }) => {
           </button>
         </motion.div>
 
-        {/* 3D ARCHITECTURAL HERO SHOWCASE WITH FLOATING ANIMATION */}
+        {/* 3D ARCHITECTURAL HERO SHOWCASE */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            y: [0, -7, 0],
-          }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{
             opacity: { duration: 0.8, delay: 0.35 },
             scale: { duration: 0.8, delay: 0.35 },
-            y: { duration: 5.5, repeat: Infinity, ease: 'easeInOut' },
           }}
           className="relative w-full max-w-4xl mb-12"
         >
@@ -193,14 +188,10 @@ export const Hero: React.FC<HeroProps> = ({ onStartEstimate, onOpenIntel }) => {
           </div>
         </motion.div>
 
-        {/* Trust Badges Bar with Hover Floating Physics */}
+        {/* Trust Badges Bar */}
         <div className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-left">
           {/* Badge 1: Licensed & Insured */}
-          <motion.div
-            whileHover={{ y: -5, scale: 1.02 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 20 }}
-            className="flex items-center gap-3 p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80 backdrop-blur-md shadow-lg hover:border-slate-600 transition"
-          >
+          <div className="flex items-center gap-3 p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80 backdrop-blur-md shadow-lg hover:border-slate-600 hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-200">
             <div className="w-11 h-11 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center shrink-0 text-blue-400 shadow-inner">
               <ShieldCheck className="w-6 h-6" />
             </div>
@@ -208,14 +199,10 @@ export const Hero: React.FC<HeroProps> = ({ onStartEstimate, onOpenIntel }) => {
               <div className="text-sm font-bold text-white">Licensed & Insured</div>
               <div className="text-xs text-slate-400">{brand.licenseNumber} • $2M Policy</div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Badge 2: Free Inspection */}
-          <motion.div
-            whileHover={{ y: -5, scale: 1.02 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 20 }}
-            className="flex items-center gap-3 p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80 backdrop-blur-md shadow-lg hover:border-slate-600 transition"
-          >
+          <div className="flex items-center gap-3 p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80 backdrop-blur-md shadow-lg hover:border-slate-600 hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-200">
             <div className="w-11 h-11 rounded-xl bg-orange-500/20 border border-orange-400/30 flex items-center justify-center shrink-0 text-orange-400 shadow-inner">
               <Award className="w-6 h-6" />
             </div>
@@ -223,14 +210,10 @@ export const Hero: React.FC<HeroProps> = ({ onStartEstimate, onOpenIntel }) => {
               <div className="text-sm font-bold text-white">Free Inspection</div>
               <div className="text-xs text-slate-400">Drone HD scan & written report</div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Badge 3: 5-Star Reviews */}
-          <motion.div
-            whileHover={{ y: -5, scale: 1.02 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 20 }}
-            className="flex items-center gap-3 p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80 backdrop-blur-md shadow-lg hover:border-slate-600 transition"
-          >
+          <div className="flex items-center gap-3 p-4 rounded-2xl bg-slate-800/70 border border-slate-700/80 backdrop-blur-md shadow-lg hover:border-slate-600 hover:-translate-y-1 hover:scale-[1.02] transition-transform duration-200">
             <div className="w-11 h-11 rounded-xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-400 shadow-inner">
               <Star className="w-6 h-6 fill-amber-400" />
             </div>
@@ -238,7 +221,7 @@ export const Hero: React.FC<HeroProps> = ({ onStartEstimate, onOpenIntel }) => {
               <div className="text-sm font-bold text-white">5-Star Reviews</div>
               <div className="text-xs text-slate-400">4.9/5 from 340+ local homeowners</div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Reassurance footnote */}

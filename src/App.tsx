@@ -77,7 +77,7 @@ export default function App() {
       />
 
       {/* 3. Multi-Step Calculator Wizard */}
-      <main className="flex-1 pb-12 sm:pb-0">
+      <main className="flex-1 pb-24 sm:pb-0">
         <CalculatorWizard onOpenIntel={() => setIsIntelOpen(true)} />
 
         {/* 4. How It Works (3 Steps) */}

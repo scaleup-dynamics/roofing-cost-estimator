@@ -89,7 +89,8 @@ export const LocalIntelModal: React.FC<LocalIntelModalProps> = ({ isOpen, onClos
     if (isOpen && !intelData) {
       fetchIntel();
     }
-  }, [isOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]); // fetchIntel is stable: it only reads brand.city which is a module-level constant
 
   if (!isOpen) return null;
 
@@ -210,14 +211,33 @@ export const LocalIntelModal: React.FC<LocalIntelModalProps> = ({ isOpen, onClos
           {!loading && intelData && (
             <div className="space-y-4">
               <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm leading-relaxed prose prose-slate max-w-none">
-                <div
-                  className="whitespace-pre-line text-slate-700"
-                  dangerouslySetInnerHTML={{
-                    __html: intelData.summary
-                      .replace(/### (.*?)\n/g, '<h4 class="font-bold text-slate-900 text-sm mt-3 mb-1">$1</h4>')
-                      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-slate-900">$1</strong>'),
-                  }}
-                />
+                {/* Safe markdown renderer — no dangerouslySetInnerHTML */}
+                <div className="text-slate-700 space-y-1">
+                  {intelData.summary.split('\n').map((line, i) => {
+                    if (line.startsWith('### ')) {
+                      return (
+                        <h4 key={i} className="font-bold text-slate-900 text-sm mt-3 mb-1">
+                          {line.replace(/^### /, '')}
+                        </h4>
+                      );
+                    }
+                    // Render **bold** spans safely
+                    const parts = line.split(/(\*\*.*?\*\*)/g);
+                    return (
+                      <p key={i} className="leading-relaxed">
+                        {parts.map((part, j) =>
+                          part.startsWith('**') && part.endsWith('**') ? (
+                            <strong key={j} className="font-semibold text-slate-900">
+                              {part.slice(2, -2)}
+                            </strong>
+                          ) : (
+                            part
+                          )
+                        )}
+                      </p>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Grounded Web Sources */}

@@ -22,5 +22,20 @@ export default defineConfig(() => {
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
     },
+    build: {
+      // Raise warning threshold — Three.js chunk will be large by design
+      chunkSizeWarningLimit: 800,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Three.js and its addons are isolated into their own async chunk.
+            // This prevents them from blocking the main React bundle's first paint.
+            'three-vendor': ['three'],
+            // Framer Motion is large — split it out too
+            'motion-vendor': ['framer-motion', 'motion'],
+          },
+        },
+      },
+    },
   };
 });

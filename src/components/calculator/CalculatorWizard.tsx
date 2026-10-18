@@ -70,7 +70,12 @@ export const CalculatorWizard: React.FC<CalculatorWizardProps> = ({ onOpenIntel 
   const [currentStep, setCurrentStep] = useState<number>(initialState.step);
   const [estimateInput, setEstimateInput] = useState<EstimateInput>(initialState.input);
   const [showRestoredBanner, setShowRestoredBanner] = useState<boolean>(initialState.wasRestored);
-  const [showLive3D, setShowLive3D] = useState<boolean>(true);
+  const [showLive3D, setShowLive3D] = useState<boolean>(() => {
+    // On mobile, collapse the 3D dock by default to avoid two simultaneous WebGL contexts
+    // (one in the Hero section, one here). User can expand it with one tap.
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= 640;
+  });
   const { triggerHaptic } = useHaptics();
 
   // Browser haptic feedback (navigator.vibrate) triggered on step transitions for tactile mobile feel
@@ -199,17 +204,9 @@ export const CalculatorWizard: React.FC<CalculatorWizardProps> = ({ onOpenIntel 
           )}
         </AnimatePresence>
 
-        {/* Top 3D Live Configuration Dock (Steps 1 to 5) with Subtle Floating Animation */}
+        {/* Top 3D Live Configuration Dock (Steps 1 to 5) */}
         {currentStep <= 5 && (
-          <motion.div
-            animate={{
-              y: [0, -4, 0],
-            }}
-            transition={{
-              duration: 5.5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
+          <div
             className="mb-8 rounded-2xl bg-[#091522] border border-slate-800 p-3 sm:p-4 shadow-xl"
           >
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800">
@@ -260,7 +257,7 @@ export const CalculatorWizard: React.FC<CalculatorWizardProps> = ({ onOpenIntel 
                 />
               </motion.div>
             )}
-          </motion.div>
+          </div>
         )}
 
         {/* Progress Bar (Only show on steps 1-5) */}

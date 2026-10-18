@@ -454,15 +454,7 @@ export const EstimateResult: React.FC<EstimateResultProps> = ({
       </div>
 
       {/* 3D Configured Architecture Showcase */}
-      <motion.div
-        animate={{
-          y: [0, -5, 0],
-        }}
-        transition={{
-          duration: 5.5,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+      <div
         className="rounded-3xl bg-[#091522] border border-slate-800 p-4 sm:p-6 shadow-2xl overflow-hidden relative"
       >
         <div className="flex items-center justify-between mb-3">
@@ -482,7 +474,7 @@ export const EstimateResult: React.FC<EstimateResultProps> = ({
           extras={input.extras}
           height="h-64 sm:h-80"
         />
-      </motion.div>
+      </div>
 
       {/* Main Big Price Hero Box with Ambient Glow */}
       <motion.div
