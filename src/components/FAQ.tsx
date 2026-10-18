@@ -11,75 +11,108 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 
-// Header variant for gentle slide-up on scroll
+// Detect mobile once at module level — avoids per-render checks
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+// Header — fast on mobile, graceful on desktop
 const headerVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: isMobile ? 14 : 24 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: isMobile ? 0.3 : 0.6,
       ease: [0.22, 1, 0.36, 1],
     },
   },
 };
 
-// Category filter container variant
+// Category filter pills
 const filterVariants: Variants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: isMobile ? 8 : 16 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.45,
-      delay: 0.1,
+      duration: isMobile ? 0.22 : 0.45,
+      delay: isMobile ? 0.05 : 0.1,
       ease: 'easeOut',
     },
   },
 };
 
-// FAQ list container with staggered children
+// Container — tighter stagger on mobile so all cards appear quickly
 const listContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
+      staggerChildren: isMobile ? 0.04 : 0.07,
+      delayChildren: isMobile ? 0.02 : 0.04,
     },
   },
 };
 
-// Staggered slide-up item variant for each FAQ card
+// Each FAQ card — snappy spring on mobile, smooth on desktop
 const itemVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 28,
+    y: isMobile ? 14 : 22,
   },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      type: 'spring',
-      damping: 24,
-      stiffness: 180,
-      mass: 0.8,
-    },
+    transition: isMobile
+      ? { duration: 0.2, ease: 'easeOut' }       // plain tween — GPU-light, instant feel
+      : { type: 'spring', damping: 26, stiffness: 200 }, // rich spring on desktop
   },
 };
 
-// Banner slide-up variant
+// Bottom CTA banner
 const bannerVariants: Variants = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: isMobile ? 16 : 32 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: isMobile ? 0.28 : 0.55,
       ease: [0.22, 1, 0.36, 1],
     },
   },
 };
+
+// Accordion open/close — fast height expansion, opacity fades in clean
+const accordionOpen = {
+  height: 'auto' as const,
+  opacity: 1,
+  transition: {
+    height: {
+      duration: isMobile ? 0.2 : 0.3,
+      ease: [0.04, 0.62, 0.23, 0.98],
+    },
+    opacity: {
+      duration: isMobile ? 0.15 : 0.22,
+      delay: isMobile ? 0.04 : 0.08,
+    },
+  },
+};
+
+const accordionClose = {
+  height: 0,
+  opacity: 0,
+  transition: {
+    height: {
+      duration: isMobile ? 0.16 : 0.22,
+      ease: [0.04, 0.62, 0.23, 0.98],
+    },
+    opacity: { duration: isMobile ? 0.1 : 0.14 },
+  },
+};
+
+// Chevron rotation — crisp on mobile
+const chevronTransition = isMobile
+  ? { duration: 0.18, ease: 'easeOut' }
+  : { type: 'spring' as const, stiffness: 380, damping: 28 };
 
 export const FAQ: React.FC = () => {
   const { faqs, brand } = roofingConfig;
@@ -111,22 +144,23 @@ export const FAQ: React.FC = () => {
 
   return (
     <section className="relative py-16 sm:py-24 bg-gradient-to-b from-slate-50 via-white to-slate-50 border-t border-slate-200 px-4 sm:px-6 overflow-hidden">
-      {/* Subtle ambient lighting blurs */}
-      <div className="absolute top-1/4 -left-40 w-96 h-96 bg-orange-500/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Ambient glows — hidden on mobile to save GPU */}
+      <div className="hidden sm:block absolute top-1/4 -left-40 w-96 h-96 bg-orange-500/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="hidden sm:block absolute bottom-1/4 -right-40 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto">
-        {/* Section Header with Motion Reveal via initial & whileInView */}
+
+        {/* Section Header */}
         <motion.div
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{ once: true, amount: 0.2 }}
           className="text-center max-w-2xl mx-auto mb-10 sm:mb-14"
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 text-orange-700 text-xs font-bold uppercase tracking-wider mb-3 shadow-sm border border-orange-200">
             <Sparkles className="w-3.5 h-3.5 text-orange-600 animate-spin-slow" />
-            <span>Answers & Homeowner Clarity</span>
+            <span>Answers &amp; Homeowner Clarity</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
@@ -136,7 +170,7 @@ export const FAQ: React.FC = () => {
             Everything you need to know about our instant estimates, Austin drone inspections, and lifetime warranty coverage.
           </p>
 
-          {/* Quick Search Input */}
+          {/* Quick Search */}
           <div className="mt-6 relative max-w-md mx-auto">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
               <Search className="w-4 h-4" />
@@ -160,12 +194,12 @@ export const FAQ: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Category Filter Pills with whileInView */}
+        {/* Category Filter Pills */}
         <motion.div
           variants={filterVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }}
           className="flex flex-wrap items-center justify-center gap-2 mb-8"
         >
           {categories.map((cat) => {
@@ -188,7 +222,7 @@ export const FAQ: React.FC = () => {
                   <motion.div
                     layoutId="activeFaqTab"
                     className="absolute inset-0 bg-orange-500 rounded-xl"
-                    transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}
                 <span className="relative z-10">{cat.label}</span>
@@ -197,14 +231,14 @@ export const FAQ: React.FC = () => {
           })}
         </motion.div>
 
-        {/* Accordion Container with Staggered Entrance & whileInView Scroll Variants */}
+        {/* Accordion List */}
         <motion.div
           variants={listContainerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.08 }}
           key={activeCategory + searchQuery}
-          className="space-y-3.5"
+          className="space-y-3"
         >
           {filteredFaqs.length === 0 ? (
             <motion.div
@@ -235,7 +269,7 @@ export const FAQ: React.FC = () => {
                 <motion.div
                   key={faq.question}
                   variants={itemVariants}
-                  className={`rounded-2xl bg-white border transition-all duration-300 overflow-hidden shadow-sm ${
+                  className={`rounded-2xl bg-white border transition-colors duration-200 overflow-hidden shadow-sm ${
                     isOpen
                       ? 'border-orange-400/80 shadow-lg shadow-orange-500/5 ring-1 ring-orange-400/20'
                       : 'border-slate-200/90 hover:border-slate-300 hover:shadow-md'
@@ -244,12 +278,12 @@ export const FAQ: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => toggle(idx)}
-                    className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 hover:bg-slate-50/60 transition cursor-pointer group"
+                    className="w-full px-5 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between gap-4 hover:bg-slate-50/60 transition-colors cursor-pointer group"
                     aria-expanded={isOpen}
                   >
                     <div className="flex items-center gap-3.5">
                       <span
-                        className={`w-2.5 h-2.5 rounded-full shrink-0 transition-all duration-300 ${
+                        className={`w-2.5 h-2.5 rounded-full shrink-0 transition-all duration-200 ${
                           isOpen
                             ? 'bg-orange-500 ring-4 ring-orange-200 scale-110'
                             : 'bg-slate-300 group-hover:bg-orange-400'
@@ -266,7 +300,7 @@ export const FAQ: React.FC = () => {
 
                     <motion.div
                       animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                      transition={chevronTransition}
                       className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
                         isOpen
                           ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20'
@@ -282,23 +316,10 @@ export const FAQ: React.FC = () => {
                       <motion.div
                         key="content"
                         initial={{ height: 0, opacity: 0 }}
-                        animate={{
-                          height: 'auto',
-                          opacity: 1,
-                          transition: {
-                            height: { duration: 0.35, ease: [0.04, 0.62, 0.23, 0.98] },
-                            opacity: { duration: 0.25, delay: 0.1 },
-                          },
-                        }}
-                        exit={{
-                          height: 0,
-                          opacity: 0,
-                          transition: {
-                            height: { duration: 0.25, ease: [0.04, 0.62, 0.23, 0.98] },
-                            opacity: { duration: 0.15 },
-                          },
-                        }}
+                        animate={accordionOpen}
+                        exit={accordionClose}
                         className="overflow-hidden"
+                        style={{ willChange: 'height, opacity' }}
                       >
                         <div className="px-5 sm:px-6 pb-6 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100/90">
                           <p className="pt-2 text-slate-700 sm:text-base font-normal">{faq.answer}</p>
@@ -322,16 +343,16 @@ export const FAQ: React.FC = () => {
           )}
         </motion.div>
 
-        {/* Dynamic Help Footer Banner with whileInView and initial variants */}
+        {/* Bottom CTA Banner */}
         <motion.div
           variants={bannerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           className="mt-12 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0B1E30] via-[#0F2A43] to-[#0A1A2A] text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl border border-slate-700/80 relative overflow-hidden"
         >
-          {/* Subtle warm glow */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
+          {/* Warm glow — desktop only */}
+          <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
 
           <div className="relative z-10 flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-400/30 flex items-center justify-center shrink-0 text-orange-400">
@@ -353,6 +374,7 @@ export const FAQ: React.FC = () => {
             <span>Speak with Inspector: {brand.phone}</span>
           </a>
         </motion.div>
+
       </div>
     </section>
   );
