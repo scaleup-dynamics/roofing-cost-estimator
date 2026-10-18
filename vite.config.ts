@@ -27,12 +27,14 @@ export default defineConfig(() => {
       chunkSizeWarningLimit: 800,
       rollupOptions: {
         output: {
-          manualChunks: {
+          // Vite 8 / rolldown requires manualChunks to be a function, not an object.
+          // The function form is also supported by Vite 5/6 (Rollup), so this is backwards-compatible.
+          manualChunks(id: string) {
             // Three.js and its addons are isolated into their own async chunk.
             // This prevents them from blocking the main React bundle's first paint.
-            'three-vendor': ['three'],
+            if (id.includes('node_modules/three')) return 'three-vendor';
             // Framer Motion is large — split it out too
-            'motion-vendor': ['framer-motion', 'motion'],
+            if (id.includes('node_modules/framer-motion') || id.includes('node_modules/motion')) return 'motion-vendor';
           },
         },
       },

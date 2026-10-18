@@ -5,8 +5,16 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api"
+      "source": "/api/local-roof-intel",
+      "destination": "/api/local-roof-intel"
+    },
+    {
+      "source": "/api/submit-lead",
+      "destination": "/api/submit-lead"
+    },
+    {
+      "source": "/api/admin/leads",
+      "destination": "/api/admin/leads"
     },
     {
       "source": "/((?!api/).*)",
