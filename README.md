@@ -1,5 +1,7 @@
 # Summit Roofing Co. — Instant Roof Cost Estimator & Lead Capture Platform
 
+> **Demonstration Notice**: *Summit Roofing Co.* is a fictional reference company created by **ScaleUp Dynamics** as a live, fully functional demonstration platform. It showcases our architectural design, 3D visualization capabilities, pricing calculation engines, and automated lead capture workflows for commercial roofing contractors. All branding, municipal details, and pricing configurations can be rebranded and adapted to any commercial contractor.
+
 A high-converting roofing estimation platform engineered specifically for professional roofing contractors. Designed for speed, precision, and homeowner trust, it enables prospective clients to obtain an accurate, itemized cost estimate in under 60 seconds while delivering qualified, ready-to-book leads directly into your sales pipeline.
 
 ---
@@ -203,4 +205,4 @@ npm run preview
 
 ## License & Attribution
 
-Designed and engineered by **[ScaleUp Dynamics](https://github.com/scaleup-dynamics)** for commercial client deployment. All rights reserved.
+Designed and engineered by **[ScaleUp Dynamics](https://github.com/scaleup-dynamics)** as a production-grade demonstration and client acquisition platform. *Summit Roofing Co.* is a fictional reference business used for demonstration and pitch purposes. All rights reserved.
