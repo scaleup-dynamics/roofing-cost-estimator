@@ -4,6 +4,32 @@ A high-converting roofing estimation platform engineered specifically for profes
 
 ---
 
+## Platform Screenshots
+
+### Hero — Instant Estimate Entry Point
+![Hero landing section showing the Summit Roofing Co. headline and call-to-action](docs/screenshots/01-hero-landing.png)
+> A clear, frictionless entry point. No forms, no commitment — homeowners see the value proposition immediately and start their estimate with one click.
+
+---
+
+### Interactive 3D Architectural Visualizer
+![3D roof visualizer showing a house model with Standing Seam Metal material selected](docs/screenshots/02-3d-visualizer.png)
+> Built with Three.js. Homeowners switch between four material types in real time — Architectural Shingles, Standing Seam Metal, Spanish Clay Tile, and Commercial TPO — while watching the roof update live. Perspective, aerial, and elevation camera modes included.
+
+---
+
+### 5-Step Intelligent Estimation Wizard
+![Step 1 of the estimation wizard — service type selection](docs/screenshots/03-estimation-wizard.png)
+> A guided, step-by-step flow covering service type, roof dimensions, material selection, roof complexity, and optional add-ons. Each step is clear, non-intimidating, and builds toward a transparent line-item estimate — not a vague ballpark.
+
+---
+
+### Transparent 3-Phase Process Explanation
+![How It Works section showing 3 numbered phases: estimate, inspection, installation](docs/screenshots/04-how-it-works.png)
+> Sets honest expectations before any contact is requested. Homeowners understand exactly what happens after they submit: a free 4K drone inspection, then a written quote locked for 30 days, then installation — with no pressure tactics.
+
+---
+
 ## Executive Overview
 
 For roofing companies, the primary bottleneck in online customer acquisition is friction: traditional forms ask for too much before offering value, while generic online calculators produce unrealistic numbers that erode trust.
