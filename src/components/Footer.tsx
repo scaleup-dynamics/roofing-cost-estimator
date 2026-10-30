@@ -61,7 +61,7 @@ export const Footer: React.FC<FooterProps> = ({ onStartEstimate, onOpenIntel, on
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-orange-400 shrink-0" />
-                <span>{brand.ownerEmail}</span>
+                <a href={`mailto:${brand.ownerEmail}`} className="hover:text-orange-400 transition">{brand.ownerEmail}</a>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />

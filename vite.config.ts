@@ -33,8 +33,8 @@ export default defineConfig(() => {
             // Three.js and its addons are isolated into their own async chunk.
             // This prevents them from blocking the main React bundle's first paint.
             if (id.includes('node_modules/three')) return 'three-vendor';
-            // Framer Motion is large — split it out too
-            if (id.includes('node_modules/framer-motion') || id.includes('node_modules/motion')) return 'motion-vendor';
+            // motion package is large — split it out too
+            if (id.includes('node_modules/motion')) return 'motion-vendor';
           },
         },
       },

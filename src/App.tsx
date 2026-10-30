@@ -118,7 +118,7 @@ export default function App() {
           className="flex-1 py-3 px-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-orange-500/20 active:scale-95 min-h-[44px] cursor-pointer"
         >
           <Calculator className="w-3.5 h-3.5" />
-          <span>60s Estimate</span>
+          <span>Free Estimate</span>
         </button>
       </div>
     </div>

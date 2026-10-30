@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calculator, Camera, ShieldCheck, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
-import { motion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'motion/react';
 
 interface HowItWorksProps {
   onStartEstimate: () => void;
